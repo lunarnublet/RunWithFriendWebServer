@@ -29,5 +29,7 @@ namespace WebServer.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Route> Routes { get; set; }
     }
 }

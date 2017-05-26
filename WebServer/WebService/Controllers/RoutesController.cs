@@ -37,8 +37,6 @@ namespace WebService.Controllers
 
                 return Ok(obj);
             }
-
-            //return BadRequest();
         }
 
         [HttpGet]
@@ -99,7 +97,13 @@ namespace WebService.Controllers
                 db.Routes.Add(route);
 
                 //db.SaveChanges();
-                return Created("Routes", route);
+                return Created("Routes", new RouteModel()
+                {
+                    id = route.Id,
+                    name = route.Name,
+                    polyline = route.Polyline,
+                    distance = route.Distance
+                });
             }
         }
 

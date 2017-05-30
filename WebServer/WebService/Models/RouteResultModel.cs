@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebService.Models
 {
-    public class RouteModel
+    public class RouteResultModel
     {
         public int id { get; set; }
         public string name { get; set; }

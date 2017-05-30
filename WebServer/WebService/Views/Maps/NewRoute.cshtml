@@ -1,0 +1,41 @@
+﻿@using System.Web.Configuration;
+@model WebService.Models.Route
+@{
+    var apiKey = WebConfigurationManager.AppSettings["maps_api_key"];
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<button id="btn_foo">foo</button>
+<div>
+    <div>
+        @using (Html.BeginForm("NewRoute", "Maps"))
+        {
+            <div class="form-group">
+                <div>
+                    <label>Total Distance</label>
+                    <p id="route_distance">0.00</p>
+                </div>
+                <label>Name</label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @Value = "My Route"})
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        }
+    </div>
+    <div id="map"></div>
+</div>
+
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=initMap">
+</script>
+<script>
+    var baseURL = '@Url.Content("~")';
+</script>
+<script src="~/Scripts/Maps/foo.js"></script>

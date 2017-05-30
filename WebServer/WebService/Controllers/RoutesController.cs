@@ -97,7 +97,7 @@ namespace WebService.Controllers
                 db.Routes.Add(route);
 
                 //db.SaveChanges();
-                return Created("Routes", new RouteModel()
+                return Created("Routes", new RouteResultModel()
                 {
                     id = route.Id,
                     name = route.Name,

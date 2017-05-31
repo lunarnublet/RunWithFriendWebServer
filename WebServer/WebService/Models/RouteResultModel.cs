@@ -9,7 +9,9 @@ namespace WebService.Models
     {
         public int id { get; set; }
         public string name { get; set; }
-        public string polyline { get; set; }
+        public string origin { get; set; }
+        public string destination { get; set; }
+
         public decimal distance { get; set; }
     }
 }

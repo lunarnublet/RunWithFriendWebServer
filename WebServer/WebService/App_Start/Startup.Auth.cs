@@ -33,9 +33,10 @@ namespace WebService
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/account/login"),
-                CookieSecure = CookieSecureOption.Always
+                CookieSecure = CookieSecureOption.SameAsRequest,
+                ExpireTimeSpan = TimeSpan.FromDays(14)
             });
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";

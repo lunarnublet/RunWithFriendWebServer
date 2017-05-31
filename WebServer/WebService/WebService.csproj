@@ -264,7 +264,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\Maps\foo.js" />
+    <Content Include="Scripts\Maps\new_route.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -286,6 +286,8 @@
     <Content Include="Views\SiteAccount\Register.cshtml" />
     <Content Include="Views\SiteAccount\Login.cshtml" />
     <Content Include="Views\Maps\NewRoute.cshtml" />
+    <Content Include="Views\Maps\Routes.cshtml" />
+    <Content Include="Views\Maps\EditRoute.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

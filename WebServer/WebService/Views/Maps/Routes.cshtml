@@ -1,0 +1,117 @@
+﻿@model IEnumerable<WebService.Models.Route>
+@{
+    var apiKey = System.Web.Configuration.WebConfigurationManager.AppSettings["maps_api_key"];
+    ViewBag.Title = "Routes";
+}
+
+<h2>Routes</h2>
+<div>
+    <table id="routes" class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Distance</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var route in Model)
+            {
+                <tr onclick="updateDirections(this)">
+                    <td>@route.Name</td>
+                    <td>@route.Origin</td>
+                    <td>@route.Destination</td>
+                    <td>@route.Distance</td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditRoute", "Maps", new { @id = route.Id }, null)
+                        @Html.ActionLink("Delete", "DeleteRoute", "Maps", new { @id = route.Id }, null)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <div id="map">
+
+    </div>
+</div>
+
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
+
+<script>
+    var map;
+    var directionsService;
+    var directionsDisplay;
+
+    function init() {
+        var table = document.getElementById('routes');
+
+        if (table.tBodies[0].rows.length > 0) {
+            var row = table.tBodies[0].rows[0];
+            var origin = row.cells[1];
+            var dest = row.cells[2];
+
+            console.log(origin.innerHTML + ' ' + dest.innerHTML)
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: getLatLngFromString(origin.innerHTML),
+                disableDefaultUI: true,
+                zoomControl: true
+            })
+
+            directionsService = new google.maps.DirectionsService;
+            directionsDisplay = new google.maps.DirectionsRenderer({
+                map: map
+            });
+
+            directionsService.route({
+                origin: getLatLngFromString(origin.innerHTML),
+                destination: getLatLngFromString(dest.innerHTML),
+                travelMode: 'WALKING',
+                unitSystem: google.maps.UnitSystem.METRIC
+            }, function (response, status) {
+                if (status == 'OK') {
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        }
+    }
+
+    function updateDirections(row) {
+        var origin = row.cells[1];
+        var dest = row.cells[2];
+
+        directionsService.route({
+            origin: getLatLngFromString(origin.innerHTML),
+            destination: getLatLngFromString(dest.innerHTML),
+            travelMode: 'WALKING',
+            unitSystem: google.maps.UnitSystem.METRIC
+        }, function (response, status) {
+            if (status == 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+
+    function getLatLngFromString(str) {
+        var latlng = str.split(/,/)
+        return new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=init">
+</script>

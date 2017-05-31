@@ -23,14 +23,20 @@ namespace WebService.Models
         [Column("name")]
         public string Name { get; set; }
 
-        [Column("polyline")]
-        public string Polyline { get; set; }
+        //[Column("polyline")]
+        //public string Polyline { get; set; }
+
+        [Column("origin")]
+        public string Origin { get; set; }
+
+        [Column("destination")]
+        public string Destination { get; set; }
 
         [Column("distance")]
         public decimal Distance { get; set; }
 
 
-        public ApplicationUser User{ get; set; } // FK user_id
+        public ApplicationUser User { get; set; } // FK user_id
     }
 
 }

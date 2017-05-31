@@ -30,7 +30,8 @@ namespace WebService.Controllers
                 foreach (var route in routes)
                 {
                     arr.Add(new JObject(new JProperty("id", route.Id), new JProperty("name", route.Name),
-                        new JProperty("polyline", route.Polyline), new JProperty("distance", route.Distance)));
+                        new JProperty("origin", route.Origin), new JProperty("destination", route.Destination),
+                        new JProperty("distance", route.Distance)));
                 }
 
                 var obj = new JObject(new JProperty("routes", arr));
@@ -59,7 +60,8 @@ namespace WebService.Controllers
                 }
 
                 var obj = new JObject(new JProperty("id", route.Id), new JProperty("name", route.Name),
-                    new JProperty("polyline", route.Polyline), new JProperty("distance", route.Distance));
+                    new JProperty("origin", route.Origin), new JProperty("destination", route.Destination),
+                        new JProperty("distance", route.Distance));
 
                 return Ok(obj);
             }
@@ -89,7 +91,8 @@ namespace WebService.Controllers
                 var route = new Route()
                 {
                     Name = routeBinding.name,
-                    Polyline = routeBinding.polyline,
+                    Origin = routeBinding.origin,
+                    Destination = routeBinding.destination,
                     Distance = routeBinding.distance,
                     User = user
                 };
@@ -101,7 +104,8 @@ namespace WebService.Controllers
                 {
                     id = route.Id,
                     name = route.Name,
-                    polyline = route.Polyline,
+                    origin = route.Origin,
+                    destination = route.Destination,
                     distance = route.Distance
                 });
             }
@@ -167,7 +171,8 @@ namespace WebService.Controllers
                 var entry = db.Entry(routeToUpdate);
 
                 route.Name = routeBinding.name;
-                route.Polyline = routeBinding.polyline;
+                route.Origin = routeBinding.origin;
+                route.Destination = routeBinding.destination;
                 route.Distance = routeBinding.distance;
 
                 entry.State = System.Data.Entity.EntityState.Modified;

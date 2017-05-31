@@ -2,17 +2,18 @@
 @model WebService.Models.Route
 @{
     var apiKey = WebConfigurationManager.AppSettings["maps_api_key"];
-    ViewBag.Title = "New Route";
+    ViewBag.Title = "Edit Route";
 }
 
-<h2>New Route</h2>
+<h2>Edit Route</h2>
 <div>
     <div>
-        @using (Html.BeginForm("NewRoute", "Maps"))
+        @using (Html.BeginForm("EditRoute", "Maps"))
         {
             <div class="form-group">
+                @Html.HiddenFor(m => m.Id, new { @Value = Model.Id })
                 @Html.Label("Route Name")
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @Value = "My Route" })
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @Value = Model.Name })
 
                 @Html.Label("Origin")
                 @Html.TextBoxFor(m => m.Origin, new { @class = "form-control", @Value = "", @readonly = "readonly", @id = "route_origin" })
@@ -21,7 +22,7 @@
                 @Html.TextBoxFor(m => m.Destination, new { @class = "form-control", @Value = "", @readonly = "readonly", @id = "route_destination" })
 
                 @Html.Label("Total Distance");
-                @Html.TextBoxFor(m => m.Distance, new { @type = "number", @class = "form-control", @Value = "0.0", @readonly = "readonly", @id = "route_distance" })
+                @Html.TextBoxFor(m => m.Distance, new { @type="number", @class = "form-control", @Value = "0.0", @readonly = "readonly", @id = "route_distance" })
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         }
@@ -35,7 +36,13 @@
         width: 100%;
     }
 </style>
+<script src="~/Scripts/Maps/new_route.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=initMap">
 </script>
-<script src="~/Scripts/Maps/new_route.js"></script>
+<script>
+    dirReq = {
+        origin: '@Model.Origin',
+        dest: '@Model.Destination'
+        };
+</script>

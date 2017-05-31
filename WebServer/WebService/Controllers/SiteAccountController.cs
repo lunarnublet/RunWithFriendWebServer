@@ -72,8 +72,6 @@ namespace WebService.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
         [Route("logout")]
         public ActionResult Logout()

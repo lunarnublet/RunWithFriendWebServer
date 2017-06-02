@@ -15,7 +15,10 @@ textarea {
     max-width: 280px;
 }
 
+.table-container {
+    overflow: auto;
+}
+
 .content-top {
     max-width:100%;
-    background-color: rgba(0, 0, 0, .3);
 }

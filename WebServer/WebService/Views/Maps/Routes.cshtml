@@ -7,32 +7,34 @@
 <div class="row">
     <div class="col-sm-8">
         <h2>Routes</h2>
-        <table id="routes" class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Origin</th>
-                    <th>Destination</th>
-                    <th>Distance</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var route in Model)
-            {
-                    <tr onclick="updateDirections(this)">
-                        <td>@route.Name</td>
-                        <td>@RouteEx.PrettyLatLng(route.Origin, 5)</td>
-                        <td>@RouteEx.PrettyLatLng(route.Destination, 5)</td>
-                        <td>@Math.Round(route.Distance, 3)</td>
-                        <td>
-                            <button class="btn btn-default">@Html.ActionLink("Edit", "EditRoute", "Maps", new { @id = route.Id }, null)</button>
-                            <button class="btn btn-default">@Html.ActionLink("Delete", "DeleteRoute", "Maps", new { @id = route.Id }, null)</button>
-                        </td>
+        <div class="table-container">
+            <table id="routes" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Distance</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var route in Model)
+            {
+                        <tr onclick="updateDirections(this)">
+                            <td>@route.Name</td>
+                            <td>@RouteEx.PrettyLatLng(route.Origin, 5)</td>
+                            <td>@RouteEx.PrettyLatLng(route.Destination, 5)</td>
+                            <td>@Math.Round(route.Distance, 3)</td>
+                            <td>
+                                <button class="btn btn-default">@Html.ActionLink("Edit", "EditRoute", "Maps", new { @id = route.Id }, null)</button>
+                                <button class="btn btn-default">@Html.ActionLink("Delete", "DeleteRoute", "Maps", new { @id = route.Id }, null)</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
         @Html.ActionLink("New Route", "NewRoute", "Maps", new { @class = "btn btn-primary", @type = "button" })
     </div>
     <div class="col-sm-4">

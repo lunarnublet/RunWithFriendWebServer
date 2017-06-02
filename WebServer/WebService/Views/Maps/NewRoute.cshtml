@@ -5,9 +5,9 @@
     ViewBag.Title = "New Route";
 }
 
-<h2>New Route</h2>
-<div>
-    <div>
+<div class="row">
+    <div class="col-sm-4">
+        <h2>New Route</h2>
         @using (Html.BeginForm("NewRoute", "Maps"))
         {
             <div class="form-group">
@@ -34,10 +34,12 @@
                 @Html.Label("Total Distance")
                 @Html.TextBoxFor(m => m.Distance, new { @type = "number", @class = "form-control", @Value = "0.0", @readonly = "readonly", @id = "route_distance" })
             </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         }
     </div>
-    <div id="map"></div>
+    <div class="col-sm-8">
+        <div id="map"></div>
+    </div>
 </div>
 
 <style>
@@ -46,7 +48,8 @@
         width: 100%;
     }
 </style>
+<script src="~/Scripts/Maps/route.js"></script>
+<script src="~/Scripts/Maps/new_route.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=initMap">
 </script>
-<script src="~/Scripts/Maps/new_route.js"></script>

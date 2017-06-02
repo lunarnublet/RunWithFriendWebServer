@@ -1,5 +1,5 @@
 ﻿function initMap() {
-    var centerLatLng = getCenter(new google.maps.LatLng({ lat: 40.6448081, lng: -111.8475633 }));
+    var centerLatLng = new google.maps.LatLng({ lat: 40.6448081, lng: -111.8475633 });
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 18,
@@ -7,19 +7,6 @@
         disableDefaultUI: true,
         zoomControl: true
     });
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            centerLatLng = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-            map.setCenter(centerLatLng);
-        }, function () {
-            console.log('Geolocation service failed.');
-        });
-    } 
-
 
     directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer({
@@ -54,13 +41,3 @@
 
     document.getElementById('route_is_loop_route').addEventListener('click', isLoopRouteChecked);
 }
-
-function getCenter(defaultLatLng) {
-    var origin = document.getElementById('route_origin');
-    if (origin.value != '') {
-        return getLatLngFromString(origin.value)
-    }
-    return defaultLatLng;
-}
-
-

@@ -1,5 +1,6 @@
 ﻿var originMarker, map, directionsService, directionsDisplay;
 var dirReq;
+var isLoopRoute = false;
 
 function initMap() {
     var centerLatLng = { lat: 40.6448081, lng: -111.8475633 };
@@ -40,6 +41,8 @@ function initMap() {
     if (dirReq != null) {
         directionsRequest(dirReq);
     }
+
+    document.getElementById('route_is_loop_route').addEventListener('click', isLoopRouteChecked);
 }
 
 function directionsRequest(dirReq) {
@@ -73,6 +76,14 @@ function directionsCallback(response, status) {
     }
 }
 
+function isLoopRouteChecked() {
+    isLoopRoute = !isLoopRoute;
+    var dist = document.getElementById('route_distance');
+    if (dist.value != null && dist.value != "") {
+        dist.value = isLoopRoute ? dist.value * 2 : dist.value / 2;
+    }
+}
+
 function getLatLngFromString(str) {
     var latlng = str.split(/,/)
     return new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
@@ -84,7 +95,7 @@ function computeTotalDistance(result) {
     for (var i = 0; i < route.legs.length; i++) {
         total += route.legs[i].distance.value;
     }
-    total = total / 1000;
+    total =  isLoopRoute ? (total / 1000) * 2 : total / 1000;
     console.log('distance: ' + total + ' km');
     var endIndex = route.overview_path.length - 1;
     document.getElementById('route_distance').value = total; /*+ ' km';*/

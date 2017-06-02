@@ -31,7 +31,7 @@ namespace WebService.Controllers
                 {
                     arr.Add(new JObject(new JProperty("id", route.Id), new JProperty("name", route.Name),
                         new JProperty("origin", route.Origin), new JProperty("destination", route.Destination),
-                        new JProperty("distance", route.Distance)));
+                        new JProperty("distance", route.Distance), new JProperty("is_loop_route", route.IsLoopRoute)));
                 }
 
                 var obj = new JObject(new JProperty("routes", arr));
@@ -61,7 +61,7 @@ namespace WebService.Controllers
 
                 var obj = new JObject(new JProperty("id", route.Id), new JProperty("name", route.Name),
                     new JProperty("origin", route.Origin), new JProperty("destination", route.Destination),
-                        new JProperty("distance", route.Distance));
+                        new JProperty("distance", route.Distance), new JProperty("is_loop_route", route.IsLoopRoute));
 
                 return Ok(obj);
             }
@@ -94,18 +94,20 @@ namespace WebService.Controllers
                     Origin = routeBinding.origin,
                     Destination = routeBinding.destination,
                     Distance = routeBinding.distance,
+                    IsLoopRoute = routeBinding.is_loop_route,
                     User = user
                 };
 
                 db.Routes.Add(route);
 
-                //db.SaveChanges();
+                db.SaveChanges();
                 return Created("Routes", new RouteResultModel()
                 {
                     id = route.Id,
                     name = route.Name,
                     origin = route.Origin,
                     destination = route.Destination,
+                    is_loop_route = route.IsLoopRoute,
                     distance = route.Distance
                 });
             }
@@ -135,7 +137,7 @@ namespace WebService.Controllers
 
                 db.Routes.Remove(routeToDelete);
 
-                //db.SaveChanges();
+                db.SaveChanges();
                 return Ok("Route deleted");
             }
         }
@@ -173,11 +175,12 @@ namespace WebService.Controllers
                 route.Name = routeBinding.name;
                 route.Origin = routeBinding.origin;
                 route.Destination = routeBinding.destination;
+                route.IsLoopRoute = routeBinding.is_loop_route;
                 route.Distance = routeBinding.distance;
 
                 entry.State = System.Data.Entity.EntityState.Modified;
 
-                //db.SaveChanges();
+                db.SaveChanges();
                 return Ok("Route updated");
             }
         }

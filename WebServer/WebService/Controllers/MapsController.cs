@@ -103,6 +103,7 @@ namespace WebService.Controllers
                     routeToUpdate.Name = route.Name;
                     routeToUpdate.Origin = route.Origin;
                     routeToUpdate.Destination = route.Destination;
+                    routeToUpdate.IsLoopRoute = route.IsLoopRoute;
                     routeToUpdate.Distance = route.Distance;
 
                     entry.State = System.Data.Entity.EntityState.Modified;

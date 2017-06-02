@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<WebService.Models.Route>
+@using WebService.Services;
 @{
     var apiKey = System.Web.Configuration.WebConfigurationManager.AppSettings["maps_api_key"];
     ViewBag.Title = "Routes";
@@ -21,9 +22,9 @@
             {
                 <tr onclick="updateDirections(this)">
                     <td>@route.Name</td>
-                    <td>@route.Origin</td>
-                    <td>@route.Destination</td>
-                    <td>@route.Distance</td>
+                    <td>@RouteEx.PrettyLatLng(route.Origin, 7)</td>
+                    <td>@RouteEx.PrettyLatLng(route.Destination, 7)</td>
+                    <td>@Math.Round(route.Distance, 3)</td>
                     <td>
                         @Html.ActionLink("Edit", "EditRoute", "Maps", new { @id = route.Id }, null)
                         @Html.ActionLink("Delete", "DeleteRoute", "Maps", new { @id = route.Id }, null)
@@ -32,6 +33,9 @@
             }
         </tbody>
     </table>
+    <button class="btn btn-default">
+        @Html.ActionLink("New Route", "NewRoute", "Maps")
+    </button>
 </div>
 <div>
     <div id="map">

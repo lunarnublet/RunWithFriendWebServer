@@ -23,8 +23,8 @@ namespace WebService.Models
         [Column("name")]
         public string Name { get; set; }
 
-        //[Column("polyline")]
-        //public string Polyline { get; set; }
+        [Column("is_loop_route")]
+        public bool IsLoopRoute { get; set; }
 
         [Column("origin")]
         public string Origin { get; set; }

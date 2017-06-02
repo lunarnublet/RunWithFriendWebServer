@@ -37,6 +37,18 @@ namespace WebService.Controllers
             }
         }
 
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         [Route("login")]
         [AllowAnonymous]
         [HttpGet]
@@ -88,11 +100,53 @@ namespace WebService.Controllers
             return View("Register");
         }
 
-        [Route("foo")]
-        [Authorize]
-        public string Foo()
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("register")]
+        public async Task<ActionResult> Register(RegisterBindingModel model)
         {
-            return "bar";
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+            }
+
+            return View("Register", model: model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+
+                if (_signInManager != null)
+                {
+                    _signInManager.Dispose();
+                    _signInManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

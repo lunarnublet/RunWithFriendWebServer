@@ -115,8 +115,13 @@ namespace WebService.Controllers
 
         [Route("routes/{id}")]
         [HttpDelete]
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(int? id)
         {
+            if (!id.HasValue)
+            {
+                return BadRequest("No id specified");
+            }
+
             var userId = User.Identity.GetUserId();
 
             using (var db = ApplicationDbContext.Create())
@@ -128,7 +133,7 @@ namespace WebService.Controllers
                     return BadRequest("Invalid user");
                 }
 
-                var routeToDelete = db.Routes.SingleOrDefault(x => x.Id == id);
+                var routeToDelete = db.Routes.SingleOrDefault(x => x.Id == id.Value);
 
                 if (routeToDelete == null)
                 {
@@ -144,11 +149,16 @@ namespace WebService.Controllers
 
         [Route("routes/{id}")]
         [HttpPut]
-        public IHttpActionResult Put(int id, [FromBody] RouteBinding routeBinding)
+        public IHttpActionResult Put(int? id, [FromBody] RouteBinding routeBinding)
         {
             if (routeBinding == null)
             {
                 return BadRequest("No route specified");
+            }
+
+            if (!id.HasValue)
+            {
+                return BadRequest("No id specified");
             }
 
             var userId = User.Identity.GetUserId();
@@ -162,7 +172,7 @@ namespace WebService.Controllers
                     return BadRequest("Invalid user");
                 }
 
-                var routeToUpdate = db.Routes.SingleOrDefault(x => x.Id == id);
+                var routeToUpdate = db.Routes.SingleOrDefault(x => x.Id == id.Value);
 
                 if (routeToUpdate == null)
                 {

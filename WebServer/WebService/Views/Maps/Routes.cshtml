@@ -4,117 +4,68 @@
     var apiKey = System.Web.Configuration.WebConfigurationManager.AppSettings["maps_api_key"];
     ViewBag.Title = "Routes";
 }
-<div class="row">
-    <div class="col-sm-8">
-        <h2>Routes</h2>
-        <div class="table-container">
-            <table id="routes" class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Origin</th>
-                        <th>Destination</th>
-                        <th>Distance</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var route in Model)
-            {
-                        <tr onclick="updateDirections(this)">
-                            <td>@route.Name</td>
-                            <td>@RouteEx.PrettyLatLng(route.Origin, 5)</td>
-                            <td>@RouteEx.PrettyLatLng(route.Destination, 5)</td>
-                            <td>@Math.Round(route.Distance, 3)</td>
-                            <td>
-                                <button class="btn btn-default">@Html.ActionLink("Edit", "EditRoute", "Maps", new { @id = route.Id }, null)</button>
-                                <button class="btn btn-default">@Html.ActionLink("Delete", "DeleteRoute", "Maps", new { @id = route.Id }, null)</button>
-                            </td>
+
+@section Header {
+    <h1>Routes</h1>
+    <p>Manage your routes here</p>
+}
+@section Body {
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="table-container">
+                <table id="routes" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Origin</th>
+                            <th>Destination</th>
+                            <th>Distance(km)</th>
+                            <th>Loop</th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var route in Model)
+                        {
+                            <tr onclick="updateDirections(this)">
+                                <td>@route.Name</td>
+                                <td>@RouteEx.PrettyLatLng(route.Origin, 5)</td>
+                                <td>@RouteEx.PrettyLatLng(route.Destination, 5)</td>
+                                <td>@Math.Round(route.Distance, 4)</td>
+                                <td>
+                                    <input type="checkbox"
+                                           @if (route.IsLoopRoute)
+                                           { 
+                                               @: checked
+                                           } disabled />
+
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("EditRoute", "Maps", new { @id = route.Id })" type="button" class="btn btn-default"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                                    <a href="@Url.Action("DeleteRoute", "Maps", new { @id = route.Id })" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                   @* @Html.ActionLink("Edit", "EditRoute", "Maps", new { @id = route.Id }, new { @class = "btn btn-default", @type = "button" })*@
+                                    @*@Html.ActionLink("Delete", "DeleteRoute", "Maps", new { @id = route.Id }, new { @class = "btn btn-default", @type = "button" })*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <a href="@Url.Action("NewRoute", "Maps")" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+@*            @Html.ActionLink("New Route", "NewRoute", "Maps", null, new { @class = "btn btn-primary", @type = "button" })*@
         </div>
-        @Html.ActionLink("New Route", "NewRoute", "Maps", new { @class = "btn btn-primary", @type = "button" })
+        <div class="col-sm-4">
+            <div id="map"></div>
+        </div>
     </div>
-    <div class="col-sm-4">
-        <div id="map"></div>
-    </div>
-</div>
-
-<style>
-    #map {
-        height: 400px;
-        width: 100%;
-    }
-</style>
-
-<script>
-    var map;
-    var directionsService;
-    var directionsDisplay;
-
-    function init() {
-        var table = document.getElementById('routes');
-
-        if (table.tBodies[0].rows.length > 0) {
-            var row = table.tBodies[0].rows[0];
-            var origin = row.cells[1];
-            var dest = row.cells[2];
-
-            console.log(origin.innerHTML + ' ' + dest.innerHTML)
-
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: getLatLngFromString(origin.innerHTML),
-                disableDefaultUI: true,
-                zoomControl: true
-            })
-
-            directionsService = new google.maps.DirectionsService;
-            directionsDisplay = new google.maps.DirectionsRenderer({
-                map: map
-            });
-
-            directionsService.route({
-                origin: getLatLngFromString(origin.innerHTML),
-                destination: getLatLngFromString(dest.innerHTML),
-                travelMode: 'WALKING',
-                unitSystem: google.maps.UnitSystem.METRIC
-            }, function (response, status) {
-                if (status == 'OK') {
-                    directionsDisplay.setDirections(response);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
-            });
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
         }
-    }
-
-    function updateDirections(row) {
-        var origin = row.cells[1];
-        var dest = row.cells[2];
-
-        directionsService.route({
-            origin: getLatLngFromString(origin.innerHTML),
-            destination: getLatLngFromString(dest.innerHTML),
-            travelMode: 'WALKING',
-            unitSystem: google.maps.UnitSystem.METRIC
-        }, function (response, status) {
-            if (status == 'OK') {
-                directionsDisplay.setDirections(response);
-            } else {
-                window.alert('Directions request failed due to ' + status);
-            }
-        });
-    }
-
-    function getLatLngFromString(str) {
-        var latlng = str.split(/,/)
-        return new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
-    }
-</script>
-
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=init">
-</script>
+    </style>
+    @Scripts.Render("~/Scripts/Maps/all_routes.js")
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=init">
+        </script>
+}

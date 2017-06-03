@@ -4,10 +4,13 @@
     var apiKey = WebConfigurationManager.AppSettings["maps_api_key"];
     ViewBag.Title = "Edit Route";
 }
+@section Header {
+    <h1>Edit Route</h1>
+}
 
+@section Body {
 <div class="row">
     <div class="col-sm-4">
-        <h2>Edit Route</h2>
         @using (Html.BeginForm("EditRoute", "Maps"))
         {
             <div class="form-group">
@@ -23,12 +26,12 @@
                 @Html.Label("Destination")
                 @Html.TextBoxFor(m => m.Destination, new { @class = "form-control", @Value = "", @readonly = "readonly", @id = "route_destination" })
             </div>
-            <div class="form-group">
+            <div class="checkbox">
                 @Html.Label("Looping Route")
-                @Html.CheckBoxFor(m => m.IsLoopRoute, new { @class = "checkbox", @Value = "", @readonly = "readonly", @id = "route_is_loop_route" })
+                @Html.EditorFor(m => m.IsLoopRoute, new { @class = "checkbox", @Value = "", @readonly = "readonly", @id = "route_is_loop_route" })
             </div>
             <div class="form-group">
-                @Html.Label("Total Distance")
+                @Html.Label("Total Distance(km)")
                 @Html.TextBoxFor(m => m.Distance, new { @type = "number", @class = "form-control", @Value = "0.0", @readonly = "readonly", @id = "route_distance" })
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -56,3 +59,4 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=@(apiKey)&callback=initMap">
 </script>
+}

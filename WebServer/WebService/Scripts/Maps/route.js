@@ -1,6 +1,6 @@
 ﻿var originMarker, map, directionsService, directionsDisplay;
 var dirReq;
-var isLoopRoute = false;
+var isLoopRoute = document.getElementById('IsLoopRoute').checked ? true : false;
 
 function directionsRequest(dirReq) {
     directionsService.route({

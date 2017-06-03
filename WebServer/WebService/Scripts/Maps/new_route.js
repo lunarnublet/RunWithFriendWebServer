@@ -52,7 +52,7 @@
         directionsRequest(dirReq);
     }
 
-    document.getElementById('route_is_loop_route').addEventListener('click', isLoopRouteChecked);
+    document.getElementById('IsLoopRoute').addEventListener('click', isLoopRouteChecked);
 }
 
 function getCenter(defaultLatLng) {

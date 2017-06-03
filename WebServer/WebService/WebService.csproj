@@ -230,6 +230,9 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\navigation.css" />
+    <Content Include="Content\road-background-dark.jpg" />
+    <Content Include="Content\road-cut.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -264,7 +267,10 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Maps\all_routes.js" />
+    <Content Include="Scripts\Maps\edit_route.js" />
     <Content Include="Scripts\Maps\new_route.js" />
+    <Content Include="Scripts\Maps\route.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -288,6 +294,7 @@
     <Content Include="Views\Maps\NewRoute.cshtml" />
     <Content Include="Views\Maps\Routes.cshtml" />
     <Content Include="Views\Maps\EditRoute.cshtml" />
+    <Content Include="Views\Shared\Navigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
